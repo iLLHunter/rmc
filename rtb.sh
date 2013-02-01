@@ -7,18 +7,18 @@
 ######################CONFIG SECTION###########################################
 #
 ##Path to the FTB jar file with no trailing slash /
-server_path="/root/ftb"
+server_path="/home/minecraft"
 ## FTB Server start command. (you can grab this from the .bat files)
-server_start="java -Xms512M -Xmx4G -jar ${server_path}/FTB-Beta-A.jar"
+server_start="java -Xms512M -Xmx2G -jar ${server_path}/ftbserver.jar"
 ##############Backup Options###################################################
 ## Time to wait between backups. (In seconds)
 ## Default is 14400 seconds (every 4 hours)
-backup_interval=86400 # daily
+backup_interval=43200 # twice daily
 ## Backup location. No trailing slash /
 ## Set to something OUTSIDE the server path or it'll recursively backup your backups.
-backup_location="/root/backup"
+backup_location="/home/mcbackup"
 ## Backup Retention in DAYS
-backup_retention=15
+backup_retention=7
 ####################Extended Backup Options####################################
 use_extended_options=0 # 0=false, 1=true  ##NOT implemented yet
 keep_daily_backup=0 # Keep at least one backup from each day.
@@ -28,7 +28,7 @@ backup_time=00:00:00 # Timestamp for when backups should be made (roughly) HH:MM
 restart_after_backup=0 # restart server after performing a scheduled backup at the time above.
 ###############################################################################
 function ftbmon() {
-  kill $(ps faux | grep "java -Xms512M -Xmx4G -jar ${server_path}" | grep -i screen | awk '{print $2}')
+  kill $(ps faux | grep "${server_start}" | grep -i screen | awk '{print $2}')
   kill $(ps faux | grep inotifywait | grep $server_path | awk '{print $2}')
   sleep 55
   crashlog="$server_path/detected_crashes.txt"
@@ -57,15 +57,15 @@ function ftbmon() {
 }
 
 function server_check() {
-  if [[ "$(ps faux | grep "java -Xms512M -Xmx4G -jar ${server_path}" | grep -i screen)" == "" ]]
+  if [[ "$(ps faux | grep "${server_start}" | grep -i screen)" == "" ]]
    then echo -e "$(date) -- \e[0;31mServer NOT running...\e[0m  \e[0;33mAttempting to start.\e[0m"
-    kill $(ps faux | grep "java -Xms512M -Xmx4G -jar ${server_path}" | grep -i screen | awk '{print $2}')
+    kill $(ps faux | grep "${server_start}" | grep -i screen | awk '{print $2}')
     sleep 5
     screen -S "FTB-Server" -d -m -c /dev/null -- bash -c "$server_start;exec $SHELL"
     sleep 55
   elif [[ $(tail -n1 $crashlog | grep CREATE) ]]
    then echo -e "$(date) -- \e[0;31mServer crash detected...\e[0m  \e[0;33mAttempting to restart.\e[0m"
-    kill $(ps faux | grep "java -Xms512M -Xmx4G -jar ${server_path}" | grep -i screen | awk '{print $2}')
+    kill $(ps faux | grep "${server_start}" | grep -i screen | awk '{print $2}')
     sleep 5
     screen -S "FTB-Server" -d -m -c /dev/null -- bash -c "$server_start;exec $SHELL"
     echo "" > $crashlog
