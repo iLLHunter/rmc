@@ -42,16 +42,14 @@ function ftbmon() {
 
 function server_check() {
   if [[ "$(ps faux | grep "${server_start}" | grep -i screen)" == "" ]] then
-    echo -e "$(date) -- \e[0;31mServer NOT running...\e[0m  \e[0;33mAttempting to start.\e[0m"
+    log "Server NOT running", "Attempting to start."
     server_restart
   elif [[ $(tail -n1 $crashlog | grep CREATE) ]] then
-    echo -e "$(date) -- \e[0;31mServer crash detected...\e[0m  \e[0;33mAttempting to restart.\e[0m"
+    log "Server crash detected", "Attempting to restart."
     server_restart
-    echo "" > $crashlog
   elif [[ $([ echo >/dev/tcp/127.0.0.1/25565 ] && echo "open") <> "open"]] then
-    echo -e "$(date) -- \e[0;31mServer port not responding...\e[0m  \e[0;33mAttempting to restart.\e[0m"
+    log "Server port not responding", "Attempting to restart."
     server_restart
-    echo "" > $crashlog
   fi
   sleep 55
 }
@@ -70,6 +68,11 @@ function server_stop() {
 }
 function server_go() {
   screen -S "FTB-Server" -d -m -c /dev/null -- bash -c "$server_start;exec $SHELL"
+}
+
+function log() {
+  echo -e "$(date) -- \e[0;31m$1...\e[0m  \e[0;33m$2\e[0m"
+  echo "" > $crashlog
 }
 
 
