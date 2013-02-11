@@ -57,25 +57,33 @@ function ftbmon() {
 }
 
 function server_check() {
-  if [[ "$(ps faux | grep "${server_start}" | grep -i screen)" == "" ]]
-   then echo -e "$(date) -- \e[0;31mServer NOT running...\e[0m  \e[0;33mAttempting to start.\e[0m"
-    kill $(ps faux | grep "${server_start}" | grep -i screen | awk '{print $2}')
-    sleep 5
-    screen -S "FTB-Server" -d -m -c /dev/null -- bash -c "$server_start;exec $SHELL"
-    sleep 55
-  elif [[ $(tail -n1 $crashlog | grep CREATE) ]]
-   then echo -e "$(date) -- \e[0;31mServer crash detected...\e[0m  \e[0;33mAttempting to restart.\e[0m"
-    kill $(ps faux | grep "${server_start}" | grep -i screen | awk '{print $2}')
-    sleep 5
-    screen -S "FTB-Server" -d -m -c /dev/null -- bash -c "$server_start;exec $SHELL"
+  if [[ "$(ps faux | grep "${server_start}" | grep -i screen)" == "" ]] then
+    echo -e "$(date) -- \e[0;31mServer NOT running...\e[0m  \e[0;33mAttempting to start.\e[0m"
+    server_restart
+  elif [[ $(tail -n1 $crashlog | grep CREATE) ]] then
+    echo -e "$(date) -- \e[0;31mServer crash detected...\e[0m  \e[0;33mAttempting to restart.\e[0m"
+    server_restart
     echo "" > $crashlog
-    sleep 55
   fi
+  sleep 55
 }
 
 function extended_backup() {
-  sleep 1 # Doesn't do anything yet. 
+  sleep 1 # Doesn't do anything yet.
 }
+
+function server_restart() {
+  server_stop
+  sleep 5
+  server_go
+}
+function server_stop() {
+  kill $(ps faux | grep "${server_start}" | grep -i screen | awk '{print $2}')
+}
+function server_go() {
+  screen -S "FTB-Server" -d -m -c /dev/null -- bash -c "$server_start;exec $SHELL"
+}
+
 
 ftbmon &
 screen -S "FTB-Server" -d -m -c /dev/null -- bash -c "$server_start;exec $SHELL"
