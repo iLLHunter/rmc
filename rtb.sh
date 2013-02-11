@@ -5,13 +5,14 @@ source rtb.config
 # Some requirements
 ## Screen
 ## inotify (inotifywait)
+## zip (command line)
 
 # Config section in rtb.config. This file can not be replace with lates versions
 # without you having to redo all the config stuff
 
 
 function ftbmon() {
-  kill $(ps faux | grep "${server_start}" | grep -i screen | awk '{print $2}')
+  server_stop
   kill $(ps faux | grep inotifywait | grep $server_path | awk '{print $2}')
   sleep 55
   crashlog="$server_path/detected_crashes.txt"
