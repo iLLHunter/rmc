@@ -64,7 +64,7 @@ function server_restart() {
   server_go
 }
 function server_stop() {
-  kill $(ps faux | grep "${server_start}" | grep -i screen | awk '{print $2}')
+  kill -9 $(ps faux | grep "${server_start}" | grep -i screen | awk '{print $2}')
 }
 function server_go() {
   screen -S "FTB-Server" -d -m -c /dev/null -- bash -c "$server_start;exec $SHELL"
