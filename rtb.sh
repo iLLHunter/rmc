@@ -1,32 +1,15 @@
 #! /bin/bash
 
+source rtb.config
+
 # Some requirements
 ## Screen
 ## inotify (inotifywait)
 
-######################CONFIG SECTION###########################################
-#
-##Path to the FTB jar file with no trailing slash /
-server_path="/home/minecraft"
-## FTB Server start command. (you can grab this from the .bat files)
-server_start="java -Xms512M -Xmx2G -jar ${server_path}/ftbserver.jar"
-##############Backup Options###################################################
-## Time to wait between backups. (In seconds)
-## Default is 14400 seconds (every 4 hours)
-backup_interval=43200 # twice daily
-## Backup location. No trailing slash /
-## Set to something OUTSIDE the server path or it'll recursively backup your backups.
-backup_location="/home/mcbackup"
-## Backup Retention in DAYS
-backup_retention=7
-####################Extended Backup Options####################################
-use_extended_options=0 # 0=false, 1=true  ##NOT implemented yet
-keep_daily_backup=0 # Keep at least one backup from each day.
-keep_weekly_backup=0 # Same for weekly backup.
-keep_monthly_backup=0 # monthly
-backup_time=00:00:00 # Timestamp for when backups should be made (roughly) HH:MM:SS
-restart_after_backup=0 # restart server after performing a scheduled backup at the time above.
-###############################################################################
+# Config section in rtb.config. This file can not be replace with lates versions
+# without you having to redo all the config stuff
+
+
 function ftbmon() {
   kill $(ps faux | grep "${server_start}" | grep -i screen | awk '{print $2}')
   kill $(ps faux | grep inotifywait | grep $server_path | awk '{print $2}')
