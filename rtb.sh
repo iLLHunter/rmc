@@ -64,6 +64,10 @@ function server_check() {
     echo -e "$(date) -- \e[0;31mServer crash detected...\e[0m  \e[0;33mAttempting to restart.\e[0m"
     server_restart
     echo "" > $crashlog
+  elif [[ $([ echo >/dev/tcp/127.0.0.1/25565 ] && echo "open") <> "open"]] then
+    echo -e "$(date) -- \e[0;31mServer port not responding...\e[0m  \e[0;33mAttempting to restart.\e[0m"
+    server_restart
+    echo "" > $crashlog
   fi
   sleep 55
 }
