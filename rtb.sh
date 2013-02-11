@@ -64,7 +64,12 @@ function server_restart() {
   server_go
 }
 function server_stop() {
-  kill -9 $(ps faux | grep "${server_start}" | grep -i screen | awk '{print $2}')
+  pid = $(ps faux | grep "${server_start}" | grep -i screen | awk '{print $2}')
+  #SIGTERM - it's nicer and lets our server try to save
+  kill  pid
+  sleep 10 #give it time to die with honor
+  #still not dead? then nuke it.
+  kill -9 pid
 }
 function server_go() {
   screen -S "FTB-Server" -d -m -c /dev/null -- bash -c "$server_start;exec $SHELL"
