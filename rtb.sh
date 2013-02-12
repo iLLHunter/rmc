@@ -10,7 +10,7 @@ source rtb.config
 # Config section in rtb.config. This file can not be replace with lates versions
 # without you having to redo all the config stuff
 
-
+echo $server_start
 function ftbmon() {
   server_stop
   kill $(ps faux | grep inotifywait | grep $server_path | awk '{print $2}')
@@ -64,9 +64,9 @@ function server_restart() {
   server_go
 }
 function server_stop() {
-  pid = $(ps faux | grep "${server_start}" | grep -i screen | awk '{print $2}')
+  pid="$(ps faux | grep "${server_start}" | grep -i screen | awk '{print $2}')"
   #SIGTERM - it's nicer and lets our server try to save
-  kill  pid
+  kill pid
   sleep 10 #give it time to die with honor
   #still not dead? then nuke it.
   kill -9 pid
@@ -76,8 +76,8 @@ function server_go() {
 }
 
 function log() {
-  echo -e "$(date) -- \e[0;31m$1...\e[0m  \e[0;33m$2\e[0m"
-  echo "" > $crashlog
+  echo -e "$(date) -- \e[0;31m$1...\e[0m  \e[0;33m$2\e[0m" >> $crashlog
+  echo "" >> $crashlog
 }
 
 
