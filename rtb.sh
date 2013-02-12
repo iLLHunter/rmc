@@ -76,7 +76,7 @@ function server_go() {
 }
 
 function log() {
-  echo -e "$(date) -- \e[0;31m$1...\e[0m  \e[0;33m$2\e[0m" >> $crashlog
+  echo "$(date) -- $1 | $2" >> $crashlog
   echo "" >> $crashlog
 }
 
