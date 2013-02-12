@@ -4,7 +4,6 @@ source rtb.config
 
 # Some requirements
 ## Screen
-## inotify (inotifywait)
 ## zip (command line)
 
 # Config section in rtb.config. This file can not be replace with lates versions
@@ -12,11 +11,9 @@ source rtb.config
 
 echo $server_start
 function ftbmon() {
-  server_stop
+#  server_stop
   kill $(ps faux | grep inotifywait | grep $server_path | awk '{print $2}')
   sleep 55
-  crashlog="$server_path/detected_crashes.txt"
-  inotifywait -m -r --format '%:e %f' -e modify -e create $server_path/crash-reports/ > $crashlog &
   while [[ 1 ]]
    do
     server_check
