@@ -25,10 +25,10 @@ function ftbmon() {
     if [[ $backup_time_diff -gt $backup_interval ]]
     then
       [[ ! -d $backup_location ]] && mkdir -p $backup_location
-      echo -e "$(date) -- \e[1;32mCreating a server backup:\e[0;32m Time since last backup: $backup_time_diff seconds ($(($backup_time_diff/60)) minutes) ($(($backup_time_diff/60/60)) hours)\e[0m"
+#      echo -e "$(date) -- \e[1;32mCreating a server backup:\e[0;32m Time since last backup: $backup_time_diff seconds ($(($backup_time_diff/60)) minutes) ($(($backup_time_diff/60/60)) hours)\e[0m"
       backup_file="${backup_location}/backup-$(date +%H-%M-%S_%d-%b-%Y).zip"
       zip -r "${backup_file}" "${server_path}" &> /dev/null
-      echo -e "$(date) -- \e[0;32mBacked Up Server files to\e[1;32m ${backup_file} \e[0m"
+#      echo -e "$(date) -- \e[0;32mBacked Up Server files to\e[1;32m ${backup_file} \e[0m"
       find ${backup_location} -type f -name "backup-*.zip" -mtime +${backup_retention} -exec rm -fv "{}" \;
     fi
     if [[ $use_extended_options = 1 ]]
