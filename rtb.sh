@@ -12,7 +12,7 @@ source rtb.config
 echo $server_start
 function ftbmon() {
 #  server_stop
-  kill $(ps faux | grep inotifywait | grep $server_path | awk '{print $2}')
+#  kill $(ps faux | grep inotifywait | grep $server_path | awk '{print $2}')
   sleep 55
   while [[ 1 ]]
    do
