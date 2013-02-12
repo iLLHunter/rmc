@@ -41,13 +41,7 @@ function ftbmon() {
 }
 
 function server_check() {
-  if [[ "$(ps faux | grep "${server_start}" | grep -i screen)" == "" ]]; then
-    log "Server NOT running", "Attempting to start."
-    server_restart
-  elif [[ $(tail -n1 $crashlog | grep CREATE) ]]; then
-    log "Server crash detected", "Attempting to restart."
-    server_restart
-  elif [[ "$(cat test.cmd | netcat 127.0.0.1 25565)"  == "" ]]; then
+  if [[ "$(cat test.cmd | netcat 127.0.0.1 25565)"  == "" ]]; then
     log "Server port not responding", "Attempting to restart."
     server_restart
   fi
