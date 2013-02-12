@@ -18,22 +18,22 @@ function ftbmon() {
    do
     server_check
     sleep 5
-    epoch_time=$(date +%s)
-    last_backup="$(stat -c %X $(find ${backup_location} -type f -mtime -1 -iname "backup*.zip"|grep $(date +%b)|sort|tail -n 1) 2>/dev/null)"
-    [[ -z $last_backup ]] && last_backup=1 ## 1 second epoch time to force a backup if none exists.
-    backup_time_diff=$(($epoch_time - $last_backup))
-    if [[ $backup_time_diff -gt $backup_interval ]]
-    then
-      [[ ! -d $backup_location ]] && mkdir -p $backup_location
+#    epoch_time=$(date +%s)
+#    last_backup="$(stat -c %X $(find ${backup_location} -type f -mtime -1 -iname "backup*.zip"|grep $(date +%b)|sort|tail -n 1) 2>/dev/null)"
+ #   [[ -z $last_backup ]] && last_backup=1 ## 1 second epoch time to force a backup if none exists.
+ #   backup_time_diff=$(($epoch_time - $last_backup))
+#    if [[ $backup_time_diff -gt $backup_interval ]]
+#    then
+#      [[ ! -d $backup_location ]] && mkdir -p $backup_location
 #      echo -e "$(date) -- \e[1;32mCreating a server backup:\e[0;32m Time since last backup: $backup_time_diff seconds ($(($backup_time_diff/60)) minutes) ($(($backup_time_diff/60/60)) hours)\e[0m"
-      backup_file="${backup_location}/backup-$(date +%H-%M-%S_%d-%b-%Y).zip"
-      zip -r "${backup_file}" "${server_path}" &> /dev/null
+#      backup_file="${backup_location}/backup-$(date +%H-%M-%S_%d-%b-%Y).zip"
+#      zip -r "${backup_file}" "${server_path}" &> /dev/null
 #      echo -e "$(date) -- \e[0;32mBacked Up Server files to\e[1;32m ${backup_file} \e[0m"
-      find ${backup_location} -type f -name "backup-*.zip" -mtime +${backup_retention} -exec rm -fv "{}" \;
-    fi
-    if [[ $use_extended_options = 1 ]]
-     then extended_backup
-    fi
+#      find ${backup_location} -type f -name "backup-*.zip" -mtime +${backup_retention} -exec rm -fv "{}" \;
+#    fi
+#    if [[ $use_extended_options = 1 ]]
+#     then extended_backup
+#    fi
   done
 }
 
