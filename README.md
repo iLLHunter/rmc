@@ -1,3 +1,29 @@
+rmc
+===
+
+Revive MC - Minecraft Server Monitor
+
+This is a bash script to start a Minecraft server in a tmux session. 
+It will monitor the server port, if it goes down the script will log the event, attempt a clean shutdown, allowing for world save.
+After waiting for a configurable amount of seconds, a hard kill is sent to kill the process, if it is still running.
+The server is then restarted.
+
+All the configuration is done in rmc.config. Keep this file in the same directory as rmc.sh
+
+Changes:
+  2014-06-21
+  * 95% new code. Only forked to give credit for the ideas used. Re-designed script for all minecraft servers, not just FTB or modded ones
+  * Made tmux the terminal multi-plexer. Made tmux session name configurable for user.
+  * Fixed the netcat port check
+  * Added configurable port for servers running on non-standard port
+  * Used 'pkill' instead of system in place(pid=ps faux | grep, then kill pid) to reliably find and safely kill the crashed server process
+  * Added configurable wait time between gentle and hard kill messages, to allow larger worlds more time to save
+  * Added configurable wait time for the server check
+  * Woke the script up! The script was really "sleepy", lots of sleeps in different places
+  * Cleaned up unused, no longer used, never used code
+
+Here is the original README.md
+=====================================================================================================================
 rtb
 ===
 
