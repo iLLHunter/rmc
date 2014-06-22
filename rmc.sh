@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Config in rmc.config
-source rtb.config
+source rmc.config
 
 ## Requirements
 # tmux
